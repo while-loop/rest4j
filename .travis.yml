@@ -1,0 +1,16 @@
+sudo: false
+language: java
+jdk:
+  - oraclejdk8
+
+before_install:
+  - go get github.com/mattn/goveralls
+
+install:
+  - mvn clean install
+
+cache:
+  directories:
+  - $HOME/.m2
+
+after_success:
