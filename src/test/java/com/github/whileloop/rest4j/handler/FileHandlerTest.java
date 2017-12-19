@@ -19,7 +19,7 @@ public class FileHandlerTest {
         FileHandler fh = new FileHandler(dir);
 
         HttpRequest r = new HttpRequest(GET, "http://localhost/index.html");
-        ResponseRecorder rec = new ResponseRecorder();
+        ResponseRecorder rec = new ResponseRecorder(null);
         fh.handle(r, rec);
 
         assertEquals(OK, rec.status);
@@ -34,7 +34,7 @@ public class FileHandlerTest {
         String dir = getClass().getClassLoader().getResource("www").toExternalForm();
         FileHandler fh = new FileHandler(dir, "/new");
         HttpRequest r = new HttpRequest(GET, "http://localhost/new/index.html");
-        ResponseRecorder rec = new ResponseRecorder();
+        ResponseRecorder rec = new ResponseRecorder(null);
         fh.handle(r, rec);
 
         assertEquals(OK, rec.status);
@@ -62,7 +62,7 @@ public class FileHandlerTest {
         String dir = getClass().getClassLoader().getResource("www").toExternalForm();
         FileHandler fh = new FileHandler(dir);
         HttpRequest r = new HttpRequest(GET, "http://localhost/fakedir/index.html");
-        ResponseRecorder rec = new ResponseRecorder();
+        ResponseRecorder rec = new ResponseRecorder(null);
         fh.handle(r, rec);
 
         assertEquals(NOT_FOUND, rec.status);
@@ -75,7 +75,7 @@ public class FileHandlerTest {
         String dir = getClass().getClassLoader().getResource("www").toExternalForm();
         FileHandler fh = new FileHandler(dir);
         HttpRequest r = new HttpRequest(GET, "http://localhost");
-        ResponseRecorder rec = new ResponseRecorder();
+        ResponseRecorder rec = new ResponseRecorder(null);
         fh.handle(r, rec);
 
         assertEquals(OK, rec.status);
@@ -88,7 +88,7 @@ public class FileHandlerTest {
         String dir = getClass().getClassLoader().getResource("www").toExternalForm();
         FileHandler fh = new FileHandler(dir);
         HttpRequest r = new HttpRequest(GET, "http://localhost/stylesheets/bootstrap.min.css");
-        ResponseRecorder rec = new ResponseRecorder();
+        ResponseRecorder rec = new ResponseRecorder(null);
         fh.handle(r, rec);
 
         assertEquals(OK, rec.status);

@@ -7,7 +7,13 @@ import com.sun.net.httpserver.HttpHandler;
 /**
  * Created by aalves on 12/18/17
  */
-public class SunRouter extends Router implements HttpHandler {
+public class SunRouter implements HttpHandler {
+    Router base;
+
+    public SunRouter(Router r) {
+        base = r;
+    }
+
     @Override
     public void handle(HttpExchange ex) {
 

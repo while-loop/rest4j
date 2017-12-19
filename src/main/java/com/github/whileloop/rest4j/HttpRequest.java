@@ -11,11 +11,12 @@ import static com.github.whileloop.rest4j.HttpMethod.GET;
 /**
  * Created by aalves on 12/18/17
  */
-public class HttpRequest extends InputStream {
+public class HttpRequest {
     Map<String, Object> params = new TreeMap<>();
     public HttpHeaders headers = new HttpHeaders();
     private HttpMethod method = GET;
     private URL url;
+    private InputStream body;
 
     {
         try {
@@ -32,9 +33,12 @@ public class HttpRequest extends InputStream {
         this.url = new URL(path);
     }
 
-    @Override
-    public int read() {
-        return 0;
+    /**
+     * If getBody or getRawBody has already been called, this stream will be empty
+     * @return
+     */
+    public InputStream getRawBody() {
+        return body;
     }
 
     /**

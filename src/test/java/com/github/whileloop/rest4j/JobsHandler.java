@@ -40,7 +40,7 @@ public class JobsHandler {
             return;
         }
 
-        JsonObject obj = new JsonParser().parse(new InputStreamReader(request)).getAsJsonObject();
+        JsonObject obj = new JsonParser().parse(new InputStreamReader(request.getRawBody())).getAsJsonObject();
         store.put(uuid, obj);
         response.write(obj.toString());
     }
@@ -77,14 +77,14 @@ public class JobsHandler {
     }
 
     private void create(HttpRequest request, HttpResponse response) throws IOException {
-        JsonObject obj = new JsonParser().parse(new InputStreamReader(request)).getAsJsonObject();
+        JsonObject obj = new JsonParser().parse(new InputStreamReader(request.getRawBody())).getAsJsonObject();
 
         String uuid = UUID.randomUUID().toString();
         obj.addProperty("uuid", UUID.randomUUID().toString());
         store.put(uuid, obj);
 
         response.writeHeader(CREATED);
-        response.write(obj.toString().getBytes());
+        response.write(obj.toString());
     }
 
     private void getAll(HttpRequest req, HttpResponse resp) throws IOException {

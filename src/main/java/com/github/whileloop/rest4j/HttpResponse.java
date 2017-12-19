@@ -8,9 +8,21 @@ import static com.github.whileloop.rest4j.HttpStatus.OK;
 /**
  * Created by aalves on 12/18/17
  */
-public abstract class HttpResponse extends OutputStream {
+public abstract class HttpResponse {
     public HttpHeaders headers = new HttpHeaders();
     public HttpStatus status=OK;
+    private OutputStream body;
+
+    public HttpResponse(OutputStream body){
+        this.body = body;
+    }
+
+    protected HttpResponse() {
+    }
+
+    public OutputStream getRawBody() {
+        return body;
+    }
 
     /**
      * Write the HTTP Request Header line with the given HTTP status code
@@ -21,6 +33,10 @@ public abstract class HttpResponse extends OutputStream {
 
     public void write(String content) throws IOException {
         write(content.getBytes());
+    }
+
+    public void write(byte[] content) throws IOException {
+        body.write(content);
     }
 
     public void error(HttpStatus status) throws IOException {

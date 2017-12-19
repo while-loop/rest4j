@@ -18,7 +18,7 @@ public class LoggerMiddlewareTest {
         Logger mockedLogger = mock(Logger.class);
         LoggerMiddleware l = new LoggerMiddleware(mockedLogger);
 
-        ResponseRecorder rec = new ResponseRecorder();
+        ResponseRecorder rec = new ResponseRecorder(null);
 
         l.handle((req, resp) -> resp.writeHeader(OK)).handle(new HttpRequest(GET, "http://localhost/"), rec);
 
@@ -29,6 +29,6 @@ public class LoggerMiddlewareTest {
     @Test
     public void testNullLogCantBeSet() throws Exception {
         LoggerMiddleware l = new LoggerMiddleware();
-        l.handle((req, resp) -> resp.writeHeader(OK)).handle(new HttpRequest(), new ResponseRecorder());
+        l.handle((req, resp) -> resp.writeHeader(OK)).handle(new HttpRequest(), new ResponseRecorder(null));
     }
 }

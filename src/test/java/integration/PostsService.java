@@ -1,3 +1,5 @@
+package integration;
+
 import com.github.whileloop.rest4j.HttpRequest;
 import com.github.whileloop.rest4j.HttpResponse;
 import com.github.whileloop.rest4j.Router;
@@ -15,15 +17,15 @@ import java.util.concurrent.Executors;
 import static com.github.whileloop.rest4j.HttpMethod.POST;
 import static com.github.whileloop.rest4j.HttpStatus.BAD_REQUEST;
 
-public class UserService {
+public class PostsService {
     private Datastore store;
 
-    public UserService(Datastore store) {
+    public PostsService(Datastore store) {
         this.store = store;
     }
 
-    SunRouter getRoutes() {
-        SunRouter r = new SunRouter(); // Bring Your Own Server
+    Router getRoutes() {
+        Router r = new Router(); // Bring Your Own Server
         r.handle("/{uuid}", this::updateUser).setMethods(POST);
         r.handle("/", this::hello);
         return r;
@@ -40,19 +42,20 @@ public class UserService {
             return;
         }
 
-        JsonObject user = new JsonParser().parse(new InputStreamReader(request)).getAsJsonObject();
+        JsonObject user = new JsonParser().parse(new InputStreamReader(request.getRawBody())).getAsJsonObject();
         store.update(user);
     }
 
     public static void main(String[] args) throws IOException {
-        UserService userService = new UserService(new Datastore());
+        PostsService userService = new PostsService(new Datastore());
 
         HttpServer server = HttpServer.create(new InetSocketAddress("localhost", 8080), 0);
 
-        SunRouter r = userService.getRoutes();
+        Router r = new Router();
+        r.handle("/users", userService.getRoutes());
         r.use(new LoggerMiddleware());
 
-        server.createContext("/v1", r);
+        server.createContext("/v1", new SunRouter(r));
         server.setExecutor(Executors.newSingleThreadExecutor());
 
         System.out.println("Starting server");

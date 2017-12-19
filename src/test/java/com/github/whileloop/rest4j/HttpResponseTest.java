@@ -13,8 +13,7 @@ public class HttpResponseTest {
 
     @Test
     public void write() {
-        HttpResponse resp = new HttpResponse() {
-            @Override
+        HttpResponse resp = new HttpResponse(null) {
             public void write(int b) throws IOException {
 
             }

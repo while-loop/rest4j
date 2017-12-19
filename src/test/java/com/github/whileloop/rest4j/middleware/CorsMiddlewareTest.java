@@ -17,7 +17,7 @@ public class CorsMiddlewareTest {
     public void testCorsSetsBeforeHandler() throws Exception {
         CorsMiddleware c = new CorsMiddleware();
 
-        ResponseRecorder rec = new ResponseRecorder();
+        ResponseRecorder rec = new ResponseRecorder(null);
         c.handle((req, resp) -> {
             assertCors(resp.headers);
             resp.writeHeader(OK);
