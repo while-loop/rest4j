@@ -9,13 +9,15 @@ import java.net.URL;
 import java.util.Map;
 import java.util.TreeMap;
 
+import static com.github.whileloop.rest4j.HttpMethod.GET;
+
 /**
  * Created by aalves on 12/18/17
  */
 public class HttpRequest extends InputStream {
     Map<String, Object> params = new TreeMap<>();
     public HttpHeaders headers= new HttpHeaders();
-    private HttpMethod method;
+    private HttpMethod method=GET;
     private URL url;
 
     public HttpRequest() {
