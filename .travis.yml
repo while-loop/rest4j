@@ -3,15 +3,8 @@ language: java
 jdk:
   - oraclejdk8
 
-branches:
-  - master
-  - develop
-
-install:
-  - mvn clean install
-
 script:
-  - mvn cobertura:cobertura coveralls:report
+  - mvn clean install cobertura:cobertura coveralls:report
 
 cache:
   directories:
@@ -19,5 +12,9 @@ cache:
 
 deploy:
   provider: script
-  script: "[[ $TRAVIS_BRANCH == \"master\" ]] || [[ $TRAVIS_BRANCH == \"develop\" ]] && mvn -s .m2/settings.xml deploy"
+  script: "mvn -s .m2/settings.xml deploy"
   skip_cleanup: true
+  on:
+    branch:
+      - master
+      - develop
