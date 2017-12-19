@@ -1,8 +1,5 @@
 package com.github.whileloop.rest4j;
 
-import com.sun.net.httpserver.Headers;
-
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -16,15 +13,22 @@ import static com.github.whileloop.rest4j.HttpMethod.GET;
  */
 public class HttpRequest extends InputStream {
     Map<String, Object> params = new TreeMap<>();
-    public HttpHeaders headers= new HttpHeaders();
-    private HttpMethod method=GET;
+    public HttpHeaders headers = new HttpHeaders();
+    private HttpMethod method = GET;
     private URL url;
+
+    {
+        try {
+            url = new URL("http://localhost");
+        } catch (MalformedURLException ignored) {
+        }
+    }
 
     public HttpRequest() {
     }
 
     public HttpRequest(HttpMethod method, String path) throws MalformedURLException {
-        this.method  = method;
+        this.method = method;
         this.url = new URL(path);
     }
 
@@ -35,6 +39,7 @@ public class HttpRequest extends InputStream {
 
     /**
      * Get Path or Query parameter
+     *
      * @param key
      * @param <T>
      * @return
