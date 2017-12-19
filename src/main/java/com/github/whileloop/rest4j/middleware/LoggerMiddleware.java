@@ -5,10 +5,8 @@ import com.github.whileloop.rest4j.Middleware;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 public class LoggerMiddleware implements Middleware {
     private Logger logger;
-
 
     public LoggerMiddleware() {
         this(null);
@@ -25,12 +23,14 @@ public class LoggerMiddleware implements Middleware {
     @Override
     public Handler handle(Handler next) {
         return (req, resp) -> {
+            // get the time before passing the request down the chain of middleware
             long start = System.currentTimeMillis();
-            next.handle(req, resp);
-            long elapsed = System.currentTimeMillis() - start;
 
-//                logger.info(String.format("%-7s %-6s %d %s", ex.getRequestMethod(), elapsed + "ms", r.statusCode,ex.getRequestURI().getRawPath()));
-            logger.info(String.format("%-7s %-6s %d %s", "GET", elapsed + "ms", 200, "path"));
+            next.handle(req, resp); // apply the next handle
+
+            long elapsed = System.currentTimeMillis() - start;
+            logger.info(String.format("%-7s %-6s %d %s",
+                    req.getMethod(), elapsed + "ms", resp.status.code(), req.getUrl().getPath()));
         };
     }
 }

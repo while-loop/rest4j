@@ -3,11 +3,14 @@ package com.github.whileloop.rest4j;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import static com.github.whileloop.rest4j.HttpStatus.OK;
+
 /**
  * Created by aalves on 12/18/17
  */
 public abstract class HttpResponse extends OutputStream {
     public HttpHeaders headers = new HttpHeaders();
+    public HttpStatus status=OK;
 
     /**
      * Write the HTTP Request Header line with the given HTTP status code

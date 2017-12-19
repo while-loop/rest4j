@@ -73,6 +73,41 @@ private static String is2String(InputStream is) {
 }
 ```
 
+Middleware
+----------
+
+```java
+public class LoggerMiddleware implements Middleware {
+    private Logger logger;
+
+    public LoggerMiddleware() {
+        this(null);
+    }
+
+    public LoggerMiddleware(Logger logger) {
+        if (logger == null) {
+            logger = LoggerFactory.getLogger(LoggerMiddleware.class);
+        }
+
+        this.logger = logger;
+    }
+
+    @Override
+    public Handler handle(Handler next) {
+        return (req, resp) -> {
+            // get the time before passing the request down the chain of middleware
+            long start = System.currentTimeMillis();
+
+            next.handle(req, resp); // apply the next handle
+
+            long elapsed = System.currentTimeMillis() - start;
+            logger.info(String.format("%-7s %-6s %d %s",
+                    req.getMethod(), elapsed + "ms", resp.status.code(), req.getUrl().getPath()));
+        };
+    }
+}
+```
+
 Changelog
 ---------
 
