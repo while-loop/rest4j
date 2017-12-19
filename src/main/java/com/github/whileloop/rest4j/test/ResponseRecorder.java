@@ -26,7 +26,7 @@ public class ResponseRecorder extends HttpResponse {
 
     @Override
     public void write(int b) throws IOException {
-        buf.append(b);
+        buf.append((char)b);
     }
 
     public String getBody(){

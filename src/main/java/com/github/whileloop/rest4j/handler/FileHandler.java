@@ -74,8 +74,7 @@ public class FileHandler implements Handler {
 
     @Override
     public void handle(HttpRequest req, HttpResponse resp) throws Exception {
-        // String path = req.getRequestURI().getRawPath(); TODO
-        String path = "";
+        String path = req.getUrl().getPath();
         if (path.startsWith(prefix)) {
             path = path.substring(prefix.length());
         }
