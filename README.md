@@ -2,7 +2,6 @@ Rest4j
 ==========
 
 <p align="center">
-  <a href="https://godoc.org/github.com/while-loop/rest4j"><img src="https://img.shields.io/badge/godoc-reference-blue.svg?style=flat-square"></a>
   <a href="https://travis-ci.org/while-loop/rest4j"><img src="https://img.shields.io/travis/while-loop/rest4j.svg?style=flat-square"></a>
   <a href="https://mvnrepository.com/artifact/com.github.while-loop/rest4j"><img src="https://maven-badges.herokuapp.com/maven-central/com.github.while-loop/rest4j/badge.svg?style=flat-square"></a>
   <a href="https://coveralls.io/github/while-loop/rest4j"><img src="https://img.shields.io/coveralls/while-loop/rest4j.svg?style=flat-square"></a>
