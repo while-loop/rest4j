@@ -3,8 +3,9 @@ language: java
 jdk:
   - oraclejdk8
 
-before_install:
-  - go get github.com/mattn/goveralls
+branches:
+  - master
+  - develop
 
 install:
   - mvn clean install
@@ -16,4 +17,7 @@ cache:
   directories:
   - $HOME/.m2
 
-after_success:
+deploy:
+  provider: script
+  script: "[[ $TRAVIS_BRANCH == \"master\" ]] || [[ $TRAVIS_BRANCH == \"develop\" ]] && mvn -s .m2/settings.xml deploy"
+  skip_cleanup: true
