@@ -10,11 +10,11 @@ cache:
   directories:
   - $HOME/.m2
 
-#deploy:
-#  provider: script
-#  script: "mvn -s ${TRAVIS_BUILD_DIR}/.m2/settings.xml deploy"
-#  skip_cleanup: true
-#  on:
-#    branch:
-#      - master
-#      - develop
+deploy:
+  provider: script
+  script: "mvn -s .m2/settings.xml deploy -DskipTests -B"
+  skip_cleanup: true
+  on:
+    branch:
+      - master
+      - develop
