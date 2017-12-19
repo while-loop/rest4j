@@ -43,35 +43,33 @@ Usage
 Example [UserService.java](src/test/java/UserService.java)
 
 ```java
-public class Example {
-    public static void main(String[] args) throws IOException {
-        HttpServer server = HttpServer.create(new InetSocketAddress("localhost", 8080), 0);
+public static void main(String[] args) throws IOException {
+    HttpServer server = HttpServer.create(new InetSocketAddress("localhost", 8080), 0);
 
-        SunRouter r = new SunRouter();
-        r.handle("/hello", (req, resp) -> {
-            String raddr = req.remoteAddr();
+    SunRouter r = new SunRouter();
+    r.handle("/hello", (req, resp) -> {
+        String raddr = req.remoteAddr();
 
-            resp.headers.set("Content-Type", "text/plain");
-            resp.write("hello " + raddr + "!!");
-        });
-        r.handle("/{uuid}", (req, resp) -> {
-            String body = is2String(req);
-            // do something with body
+        resp.headers.set("Content-Type", "text/plain");
+        resp.write("hello " + raddr + "!!");
+    });
+    r.handle("/{uuid}", (req, resp) -> {
+        String body = is2String(req);
+        String uuid = req.getParam("uuid");
+        // do something with body
 
-            resp.writeHeader(ACCEPTED);
-        }).setMethods(PUT);
+        resp.writeHeader(ACCEPTED);
+    }).setMethods(PUT);
 
-        server.createContext("/", r);
-        server.setExecutor(Executors.newSingleThreadExecutor());
-        server.start();
-    }
+    server.createContext("/", r);
+    server.setExecutor(Executors.newSingleThreadExecutor());
+    server.start();
+}
 
-    private static String is2String(InputStream is) {
-        try (java.util.Scanner s = new java.util.Scanner(is, StandardCharsets.UTF_8.name())) {
-            s.useDelimiter("\\A");
-            return s.hasNext() ? s.next() : "";
-        }
-    }
+private static String is2String(InputStream is) {
+    try (java.util.Scanner s = new java.util.Scanner(is, StandardCharsets.UTF_8.name())) {
+        s.useDelimiter("\\A");
+        return s.hasNext() ? s.next() : "";
 }
 ```
 
