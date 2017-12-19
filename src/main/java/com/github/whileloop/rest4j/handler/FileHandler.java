@@ -67,7 +67,7 @@ public class FileHandler implements Handler {
     public void close() {
         try {
             fs.close();
-        } catch (IOException e) {
+        } catch (Exception e) {
             logger.warn(e.toString(), e);
         }
     }

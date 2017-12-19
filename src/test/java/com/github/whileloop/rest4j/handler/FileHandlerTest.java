@@ -26,6 +26,7 @@ public class FileHandlerTest {
         String body = rec.getBody();
         assertEquals("text/html", rec.headers.getFirst("Content-Type"));
         assertThat(body, containsString("<title>rest4j</title>"));
+        fh.close();
     }
 
     @Test
@@ -67,6 +68,19 @@ public class FileHandlerTest {
         assertEquals(NOT_FOUND, rec.status);
         String body = rec.getBody();
         assertEquals("not found: /fakedir/index.html", body);
+    }
+
+    @Test
+    public void testNoSlashRoot() throws Exception {
+        String dir = getClass().getClassLoader().getResource("www").toExternalForm();
+        FileHandler fh = new FileHandler(dir);
+        HttpRequest r = new HttpRequest(GET, "http://localhost");
+        ResponseRecorder rec = new ResponseRecorder();
+        fh.handle(r, rec);
+
+        assertEquals(OK, rec.status);
+        String body = rec.getBody();
+        assertThat(body, containsString("<title>rest4j</title>"));
     }
 
     @Test

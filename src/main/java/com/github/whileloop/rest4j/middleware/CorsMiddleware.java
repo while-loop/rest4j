@@ -9,7 +9,7 @@ public class CorsMiddleware implements Middleware {
         return ((req, resp) -> {
             resp.headers.set("Access-Control-Allow-Origin", "*");
             resp.headers.set("Access-Control-Allow-Methods", "*");
-            resp.headers.set("Access-Control-Allow-Headers", "Origin", "X-Requested-With", "Content-Type", "Accept");
+            resp.headers.add("Access-Control-Allow-Headers", "Origin", "X-Requested-With", "Content-Type", "Accept");
             next.handle(req, resp);
         });
     }
