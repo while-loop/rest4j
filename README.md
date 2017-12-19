@@ -4,7 +4,7 @@ Rest4j
 <p align="center">
   <a href="https://godoc.org/github.com/while-loop/rest4j"><img src="https://img.shields.io/badge/godoc-reference-blue.svg?style=flat-square"></a>
   <a href="https://travis-ci.org/while-loop/rest4j"><img src="https://img.shields.io/travis/while-loop/rest4j.svg?style=flat-square"></a>
-  <a href="https://mvnrepository.com/artifact/com.github.whileloop/rest4j"><img src="https://maven-badges.herokuapp.com/maven-central/com.github.whileloop/rest4j/badge.svg?style=flat-square"></a>
+  <a href="https://mvnrepository.com/artifact/com.github.while-loop/rest4j"><img src="https://maven-badges.herokuapp.com/maven-central/com.github.while-loop/rest4j/badge.svg?style=flat-square"></a>
   <a href="https://coveralls.io/github/while-loop/rest4j"><img src="https://img.shields.io/coveralls/while-loop/rest4j.svg?style=flat-square"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache 2.0-blue.svg?style=flat-square"></a>
 </p>
@@ -20,14 +20,14 @@ Download
 #### Gradle
 ```gradle
 dependencies {
-    compile 'com.github.whileloop:rest4j:1.0.0-SNAPSHOT'
+    compile 'com.github.while-loop:rest4j:1.0.0-SNAPSHOT'
 }
 ```
 
 #### Maven
 ```maven
 <dependency>
-    <groupId>com.github.whileloop</groupId>
+    <groupId>com.github.while-loop</groupId>
     <artifactId>rest4j</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 </dependency>
@@ -36,7 +36,7 @@ dependencies {
 Implemented Servers
 -------------------
 
-- com.sun.net.HttpServer [HttpServer](https://docs.oracle.com/javase/8/docs/jre/api/net/httpserver/spec/com/sun/net/httpserver/HttpServer.html)
+- com.sun.net.[HttpServer](https://docs.oracle.com/javase/8/docs/jre/api/net/httpserver/spec/com/sun/net/httpserver/HttpServer.html)
 
 Usage
 -----
