@@ -7,7 +7,10 @@ before_install:
   - go get github.com/mattn/goveralls
 
 install:
-  - mvn clean install cobertura:cobertura coveralls:report
+  - mvn clean install
+
+script:
+  - mvn cobertura:cobertura coveralls:report
 
 cache:
   directories:
