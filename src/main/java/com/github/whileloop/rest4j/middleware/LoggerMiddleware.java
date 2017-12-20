@@ -30,7 +30,7 @@ public class LoggerMiddleware implements Middleware {
 
             long elapsed = System.currentTimeMillis() - start;
             logger.info(String.format("%-7s %-6s %d %s",
-                    req.getMethod(), elapsed + "ms", resp.status.code(), req.getUrl().getPath()));
+                    req.getMethod(), elapsed + "ms", resp.getStatus().code(), req.getUrl().getPath()));
         };
     }
 }

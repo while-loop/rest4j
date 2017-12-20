@@ -22,7 +22,7 @@ public class FileHandlerTest {
         ResponseRecorder rec = new ResponseRecorder(null);
         fh.handle(r, rec);
 
-        assertEquals(OK, rec.status);
+        assertEquals(OK, rec.getStatus());
         String body = rec.getBody();
         assertEquals("text/html", rec.headers.getFirst("Content-Type"));
         assertThat(body, containsString("<title>rest4j</title>"));
@@ -37,7 +37,7 @@ public class FileHandlerTest {
         ResponseRecorder rec = new ResponseRecorder(null);
         fh.handle(r, rec);
 
-        assertEquals(OK, rec.status);
+        assertEquals(OK, rec.getStatus());
         String body = rec.getBody();
         assertEquals("text/html", rec.headers.getFirst("Content-Type"));
         assertThat(body, containsString("<title>rest4j</title>"));
@@ -51,7 +51,7 @@ public class FileHandlerTest {
         ResponseRecorder rec = new ResponseRecorder();
         fh.handle(r, rec);
 
-        assertEquals(OK, rec.status);
+        assertEquals(OK, rec.getStatus());
         String body = rec.getBody();
         assertEquals("text/html", rec.headers.getFirst("Content-Type"));
         assertThat(body, containsString("<title>rest4j</title>"));
@@ -65,7 +65,7 @@ public class FileHandlerTest {
         ResponseRecorder rec = new ResponseRecorder(null);
         fh.handle(r, rec);
 
-        assertEquals(NOT_FOUND, rec.status);
+        assertEquals(NOT_FOUND, rec.getStatus());
         String body = rec.getBody();
         assertEquals("not found: /fakedir/index.html", body);
     }
@@ -78,7 +78,7 @@ public class FileHandlerTest {
         ResponseRecorder rec = new ResponseRecorder(null);
         fh.handle(r, rec);
 
-        assertEquals(OK, rec.status);
+        assertEquals(OK, rec.getStatus());
         String body = rec.getBody();
         assertThat(body, containsString("<title>rest4j</title>"));
     }
@@ -91,7 +91,7 @@ public class FileHandlerTest {
         ResponseRecorder rec = new ResponseRecorder(null);
         fh.handle(r, rec);
 
-        assertEquals(OK, rec.status);
+        assertEquals(OK, rec.getStatus());
         String body = rec.getBody();
         assertThat(body, containsString("bootstrap.min.css.map"));
         assertEquals("text/css", rec.headers.getFirst("Content-Type"));

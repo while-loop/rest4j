@@ -8,6 +8,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+
+import static com.github.whileloop.rest4j.HttpStatus.*;
 
 public class Router implements Handler {
 
@@ -31,29 +34,6 @@ public class Router implements Handler {
     public List<Route> getRoutes() {
         return new ArrayList<>(routes);
     }
-
-//    @Override
-//    public void handle(HttpExchange ex) throws IOException {
-//        HttpResponse response;
-//        try {
-//            Route route = match(ex);
-//            if (route == null) {
-//                ex.sendResponseHeaders(Http.STATUS_NOT_FOUND, 0);
-//                ex.getResponseBody().close();
-//                System.err.println("Path not found " + ex.getRequestURI());
-//                return;
-//            }
-//
-//            for (Map.Entry<String, String> e : route.vars.entrySet()) {
-//                ex.setAttribute(e.getKey(), e.getValue());
-//            }
-//
-//            sendResponse(new ChainImpl(middlewares, route.handler).call(ex), ex);
-//        } catch (Exception e) {
-//            logger.error("failed to chain request", e);
-//            sendResponse(new HttpResponse<>(Http.STATUS_INTERNAL_SERVER_ERROR, e.toString()), ex);
-//        }
-//    }
 
     protected void sendResponse(HttpResponse response, HttpExchange ex) throws IOException {
 //        OutputStream os = null;
@@ -79,9 +59,9 @@ public class Router implements Handler {
 //        }
     }
 
-    Route match(HttpExchange ex) {
+    Route match(HttpRequest request) {
         for (Route r : routes) {
-            if (r.matches(ex)) {
+            if (r.matches(request)) {
                 return r;
             }
         }
@@ -135,6 +115,32 @@ public class Router implements Handler {
 
     @Override
     public void handle(HttpRequest req, HttpResponse resp) {
+        try {
+            Route route = match(req);
+            if (route == null) {
+                resp.writeHeader(NOT_FOUND);
+                resp.getRawBody().close();
+                System.err.println("Path not found " + req.getUrl().getPath());
+                return;
+            } else if (!route.methods.contains(req.getMethod())) {
+                resp.writeHeader(METHOD_NOT_ALLOWED);
+                resp.getRawBody().close();
+                System.err.printf("Method not allowed: %s. %s", req.getMethod(), req.getUrl().getPath());
+                return;
+            }
 
+            for (Map.Entry<String, String> e : route.vars.entrySet()) {
+                req.setParam(e.getKey(), e.getValue());
+            }
+
+            MiddlewareUtil.wrapMiddleware(route.handler, middlewares).handle(req, resp);
+        } catch (Exception e) {
+            try {
+                logger.error("failed to chain request", e);
+                resp.error(INTERNAL_SERVER_ERROR);
+            } catch (IOException e1) {
+                logger.error("Failed to write header " + e1.toString());
+            }
+        }
     }
 }

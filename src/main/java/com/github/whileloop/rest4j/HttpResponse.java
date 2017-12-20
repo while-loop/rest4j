@@ -10,10 +10,10 @@ import static com.github.whileloop.rest4j.HttpStatus.OK;
  */
 public abstract class HttpResponse {
     public HttpHeaders headers = new HttpHeaders();
-    public HttpStatus status=OK;
+    protected HttpStatus status = OK;
     private OutputStream body;
 
-    public HttpResponse(OutputStream body){
+    public HttpResponse(OutputStream body) {
         this.body = body;
     }
 
@@ -46,5 +46,9 @@ public abstract class HttpResponse {
     public void error(HttpStatus status, String message) throws IOException {
         writeHeader(status);
         write(message.getBytes());
+    }
+
+    public HttpStatus getStatus(){
+        return status;
     }
 }

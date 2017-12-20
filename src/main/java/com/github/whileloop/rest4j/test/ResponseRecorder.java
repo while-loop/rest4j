@@ -10,7 +10,6 @@ import java.io.OutputStream;
  * Created by aalves on 12/18/17
  */
 public class ResponseRecorder extends HttpResponse {
-    public HttpStatus status;
     private StringBuffer buf = new StringBuffer();
 
     public ResponseRecorder() {
@@ -27,7 +26,7 @@ public class ResponseRecorder extends HttpResponse {
     }
 
     @Override
-    public void error(HttpStatus status, String message) throws IOException {
+    public void error(HttpStatus status, String message) {
         this.status = status;
         buf.append(message);
     }

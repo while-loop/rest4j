@@ -12,7 +12,7 @@ import static com.github.whileloop.rest4j.HttpMethod.GET;
  * Created by aalves on 12/18/17
  */
 public class HttpRequest {
-    Map<String, Object> params = new TreeMap<>();
+    private Map<String, Object> params = new TreeMap<>();
     public HttpHeaders headers = new HttpHeaders();
     private HttpMethod method = GET;
     private URL url;
@@ -48,8 +48,12 @@ public class HttpRequest {
      * @param <T>
      * @return
      */
-    public <T extends Object> T getParam(String key) {
+    public <T> T getParam(String key) {
         return (T) params.get(key);
+    }
+
+    public <T> void setParam(String key, T object) {
+        this.params.put(key, object);
     }
 
     public HttpMethod getMethod() {

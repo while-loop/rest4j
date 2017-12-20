@@ -51,10 +51,8 @@ public class Route {
         return this;
     }
 
-    public boolean matches(HttpExchange ex) {
-        HttpMethod method = HttpMethod.valueOf(ex.getRequestMethod());
-        String path = ex.getRequestURI().getRawPath();
-        return this.methods.contains(method) && buildVars(path);
+    public boolean matches(HttpRequest req) {
+        return buildVars(req.getUrl().getPath());
     }
 
     boolean buildVars(String matchedPath) {

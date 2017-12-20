@@ -23,7 +23,7 @@ public class LoggerMiddlewareTest {
         l.handle((req, resp) -> resp.writeHeader(OK)).handle(new HttpRequest(GET, "http://localhost/"), rec);
 
         verify(mockedLogger).info(String.format("%-7s %-6s %d %s", "GET", "0ms", 200, "/"));
-        assertEquals(OK, rec.status);
+        assertEquals(OK, rec.getStatus());
     }
 
     @Test
