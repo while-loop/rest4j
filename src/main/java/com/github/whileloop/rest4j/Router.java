@@ -1,6 +1,5 @@
 package com.github.whileloop.rest4j;
 
-import com.sun.net.httpserver.HttpExchange;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,7 +9,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import static com.github.whileloop.rest4j.HttpStatus.*;
+import static com.github.whileloop.rest4j.HttpStatus.INTERNAL_SERVER_ERROR;
+import static com.github.whileloop.rest4j.HttpStatus.METHOD_NOT_ALLOWED;
+import static com.github.whileloop.rest4j.HttpStatus.NOT_FOUND;
 
 public class Router implements Handler {
 
@@ -35,27 +36,19 @@ public class Router implements Handler {
         return new ArrayList<>(routes);
     }
 
-    Route match(HttpRequest request) {
+    List<Route> match(HttpRequest request) {
+        List<Route> rs = new ArrayList<>();
         for (Route r : routes) {
             if (r.matches(request)) {
-                return r;
+                rs.add(r);
             }
         }
-        return null;
+        return rs;
     }
 
     public Route handle(Route r) {
         r.path = root + r.path;
         routes.add(r);
-        if (!r.strictSlash) {
-            Route r2 = new Route(r);
-            if (r.path.endsWith("/")) {
-                r2.path = r2.path.substring(0, r2.path.length() - 1);
-            } else {
-                r2.path += "/";
-            }
-            routes.add(r2);
-        }
         return r;
     }
 
@@ -92,15 +85,23 @@ public class Router implements Handler {
     @Override
     public void handle(HttpRequest req, HttpResponse resp) throws Exception {
         try {
-            Route route = match(req);
-            if (route == null) {
+            List<Route> routes = match(req);
+            if (routes == null || routes.size() <= 0) {
                 resp.writeHeader(NOT_FOUND);
-                resp.getRawBody().close();
                 System.err.println("Path not found " + req.getUrl().getPath());
                 return;
-            } else if (!route.methods.contains(req.getMethod())) {
+            }
+
+            Route route = null;
+            for (Route r : routes) {
+                if (r.methods.contains(req.getMethod())) {
+                    route = r;
+                    break;
+                }
+            }
+
+            if (route == null) {
                 resp.writeHeader(METHOD_NOT_ALLOWED);
-                resp.getRawBody().close();
                 System.err.printf("Method not allowed: %s. %s", req.getMethod(), req.getUrl().getPath());
                 return;
             }

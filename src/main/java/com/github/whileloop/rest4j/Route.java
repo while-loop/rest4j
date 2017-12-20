@@ -55,6 +55,15 @@ public class Route {
         String rPath = path;
         String mPath = matchedPath;
 
+        if (!strictSlash) {
+            if (!rPath.endsWith("/")) {
+                rPath += "/";
+            }
+            if (!mPath.endsWith("/")) {
+                mPath += "/";
+            }
+        }
+
         int i = 0;
         while (rPath.length() > 0 && i < rPath.length()) {
             if (rPath.charAt(i) != ':') {
@@ -62,8 +71,14 @@ public class Route {
                 continue;
             }
 
+            if (!rPath.substring(0, i).equals(mPath.substring(0, i))){
+                break;
+            }
+
             rPath = rPath.substring(i + 1); //+1 for ':'
             mPath = mPath.substring(i);
+
+
 
             // found var.. look for end of string or first /
             i = findEnd(rPath);
