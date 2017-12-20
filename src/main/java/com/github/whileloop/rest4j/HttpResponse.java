@@ -8,10 +8,11 @@ import static com.github.whileloop.rest4j.HttpStatus.OK;
 /**
  * Created by aalves on 12/18/17
  */
-public abstract class HttpResponse {
+public class HttpResponse {
     public HttpHeaders headers = new HttpHeaders();
     protected HttpStatus status = OK;
-    private OutputStream body;
+    protected OutputStream body;
+    protected String protocol;
 
     public HttpResponse(OutputStream body) {
         this.body = body;
@@ -29,7 +30,9 @@ public abstract class HttpResponse {
      *
      * @param status
      */
-    public abstract void writeHeader(HttpStatus status);
+    public void writeHeader(HttpStatus status) throws IOException {
+        this.write(String.format("%s %s %d\r\n", protocol, status.name(), status.code()));
+    }
 
     public void write(String content) throws IOException {
         write(content.getBytes());
@@ -48,7 +51,43 @@ public abstract class HttpResponse {
         write(message.getBytes());
     }
 
-    public HttpStatus getStatus(){
+    public HttpStatus getStatus() {
         return status;
+    }
+
+    public static class Builder {
+        private HttpHeaders headers = new HttpHeaders();
+        private HttpStatus status = OK;
+        private OutputStream body;
+        private String protocol;
+
+        public Builder setProtocol(String protocol) {
+            this.protocol = protocol;
+            return this;
+        }
+
+        public Builder setHeaders(HttpHeaders headers) {
+            this.headers = headers;
+            return this;
+        }
+
+        public Builder setStatus(HttpStatus status) {
+            this.status = status;
+            return this;
+        }
+
+        public Builder setBody(OutputStream body) {
+            this.body = body;
+            return this;
+        }
+
+        public HttpResponse build() {
+            HttpResponse r = new HttpResponse();
+            r.headers = headers;
+            r.status = status;
+            r.body = body;
+            r.protocol = protocol;
+            return r;
+        }
     }
 }

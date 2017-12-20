@@ -12,11 +12,12 @@ import static com.github.whileloop.rest4j.HttpMethod.GET;
  * Created by aalves on 12/18/17
  */
 public class HttpRequest {
-    private Map<String, Object> params = new TreeMap<>();
+    protected Map<String, Object> params = new TreeMap<>();
     public HttpHeaders headers = new HttpHeaders();
-    private HttpMethod method = GET;
-    private URL url;
-    private InputStream body;
+    protected HttpMethod method = GET;
+    protected URL url;
+    protected InputStream body;
+    protected String protocol;
 
     {
         try {
@@ -35,6 +36,7 @@ public class HttpRequest {
 
     /**
      * If getBody or getRawBody has already been called, this stream will be empty
+     *
      * @return
      */
     public InputStream getRawBody() {
@@ -66,5 +68,60 @@ public class HttpRequest {
 
     public String remoteAddr() {
         return null;
+    }
+
+    public String getProtocol() {
+        return protocol;
+    }
+
+
+    public static class Builder {
+        private Map<String, Object> params = new TreeMap<>();
+        private HttpHeaders headers = new HttpHeaders();
+        private HttpMethod method = GET;
+        private URL url;
+        private InputStream body;
+        private String protocol;
+
+        public Builder setParams(Map<String, Object> params) {
+            this.params = params;
+            return this;
+        }
+
+        public Builder setHeaders(HttpHeaders headers) {
+            this.headers = headers;
+            return this;
+        }
+
+        public Builder setMethod(HttpMethod method) {
+            this.method = method;
+            return this;
+        }
+
+        public Builder setUrl(URL url) {
+            this.url = url;
+            return this;
+        }
+
+        public Builder setBody(InputStream body) {
+            this.body = body;
+            return this;
+        }
+
+        public Builder setProtocol(String protocol) {
+            this.protocol = protocol;
+            return this;
+        }
+
+        public HttpRequest build() {
+            HttpRequest r = new HttpRequest();
+            r.params = params;
+            r.headers = headers;
+            r.method = method;
+            r.url = url;
+            r.body = body;
+            r.protocol = protocol;
+            return r;
+        }
     }
 }

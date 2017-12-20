@@ -13,7 +13,7 @@ public class MiddlewareTest {
 
 
     @Test
-    public void testOrder() throws IOException {
+    public void testOrder() throws Exception {
         Router r = new Router();
         r.use(
                 new TestMiddleware("A"),

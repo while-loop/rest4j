@@ -20,7 +20,11 @@ public class HttpHeaders extends TreeMap<String, List<String>> {
     }
 
     public void set(String key, String... values) {
-        put(key, Arrays.asList(values));
+        this.set(key, Arrays.asList(values));
+    }
+
+    public void set(String key, List<String> values) {
+        super.put(key, values);
     }
 
     public void add(String key, String... values) {
@@ -30,6 +34,6 @@ public class HttpHeaders extends TreeMap<String, List<String>> {
         }
 
         vals.addAll(Arrays.asList(values));
-        put(key, vals);
+        super.put(key, vals);
     }
 }

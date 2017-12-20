@@ -35,30 +35,6 @@ public class Router implements Handler {
         return new ArrayList<>(routes);
     }
 
-    protected void sendResponse(HttpResponse response, HttpExchange ex) throws IOException {
-//        OutputStream os = null;
-//        try {
-//            String r = (response.body == null) ? "" : response.body.toString();
-//            int offset = 0;
-//            byte[] bs = r.getBytes();
-//            int len = bs.length;
-//            ex.sendResponseHeaders(response.statusCode, len);
-//            os = ex.getResponseBody();
-//            while (offset < len) {
-//                int toWrite = Math.min((len - offset), 1024);
-//                if (toWrite <= 0) break;
-//                os.write(bs, offset, toWrite);
-//                offset += toWrite;
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } finally {
-//            if (os != null) {
-//                os.close();
-//            }
-//        }
-    }
-
     Route match(HttpRequest request) {
         for (Route r : routes) {
             if (r.matches(request)) {
@@ -114,7 +90,7 @@ public class Router implements Handler {
 //    }
 
     @Override
-    public void handle(HttpRequest req, HttpResponse resp) {
+    public void handle(HttpRequest req, HttpResponse resp) throws Exception {
         try {
             Route route = match(req);
             if (route == null) {

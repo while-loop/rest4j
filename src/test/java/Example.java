@@ -35,7 +35,7 @@ public class Example {
         server.start();
     }
 
-    private static void update(HttpRequest req, HttpResponse resp) {
+    private static void update(HttpRequest req, HttpResponse resp) throws IOException {
         String body = is2String(req.getRawBody());
         String uuid = req.getParam("uuid");
         // do something with body

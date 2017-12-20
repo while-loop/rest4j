@@ -1,6 +1,9 @@
 package com.github.whileloop.rest4j.handler;
 
-import com.github.whileloop.rest4j.*;
+import com.github.whileloop.rest4j.Handler;
+import com.github.whileloop.rest4j.HttpRequest;
+import com.github.whileloop.rest4j.HttpResponse;
+import com.github.whileloop.rest4j.Router;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -107,10 +110,13 @@ public class FileHandler implements Handler {
         resp.write(content);
     }
 
-    public Router toRouter(){
-        Router r = new Router();
-        r.handle("/", this);
-        return r;
+    public Router getRouter() {
+        return new Router() {
+            @Override
+            public void handle(HttpRequest req, HttpResponse resp) throws Exception {
+                FileHandler.this.handle(req, resp);
+            }
+        };
     }
 
     private static String is2String(InputStream is) {

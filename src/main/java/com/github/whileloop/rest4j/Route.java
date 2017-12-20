@@ -42,10 +42,6 @@ public class Route {
         this.path = path;
     }
 
-    public void setHandler(Handler handler) {
-        this.handler = handler;
-    }
-
     public Route setMethods(HttpMethod... methods) {
         this.methods = Arrays.asList(methods);
         return this;

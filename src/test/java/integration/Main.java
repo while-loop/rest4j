@@ -46,7 +46,7 @@ public class Main {
 
         server = HttpServer.create(new InetSocketAddress(0), 0);
         server.createContext("/api", new SunRouter(router));
-        server.createContext("/", new SunRouter(fh.toRouter()));
+        server.createContext("/", new SunRouter(fh.getRouter()));
         server.setExecutor(Executors.newSingleThreadExecutor());
 
         server.start();
@@ -61,7 +61,7 @@ public class Main {
     }
 
     @Test
-    public void testFileHandler() throws UnirestException, InterruptedException {
+    public void testFileHandler() throws UnirestException {
         HttpResponse<String> resp = Unirest.post(base + "/index.html").asString();
         assertThat(resp.getBody(), containsString("<title>rest4j</title>"));
         assertEquals(200, resp.getStatus());
@@ -69,7 +69,7 @@ public class Main {
     }
 
     @Test
-    public void testFileHandler2() throws UnirestException, InterruptedException {
+    public void testFileHandler2() throws UnirestException {
         HttpResponse<String> resp = Unirest.post(base + "/index.html").asString();
         assertThat(resp.getBody(), containsString("<title>rest4j</title>"));
         assertEquals(200, resp.getStatus());
