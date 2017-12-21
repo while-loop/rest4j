@@ -1,5 +1,6 @@
 package com.github.whileloop.rest4j;
 
+import com.github.whileloop.rest4j.test.RequestRecorder;
 import com.github.whileloop.rest4j.test.ResponseRecorder;
 import org.junit.Test;
 
@@ -27,7 +28,7 @@ public class MiddlewareTest {
             resp.write("got it");
         });
 
-        HttpRequest req = new HttpRequest(GET, "http://localhost/");
+        HttpRequest req = new RequestRecorder(GET, "http://localhost/");
         ResponseRecorder rec = new ResponseRecorder();
         r.handle(req, rec);
         assertEquals(OK, rec.getStatus());
@@ -36,7 +37,7 @@ public class MiddlewareTest {
         assertEquals("ABCD", req.getParam("before"));
         assertEquals("DCBA", req.getParam("after"));
 
-        req = new HttpRequest(GET, "http://localhost/");
+        req = new RequestRecorder(GET, "http://localhost/");
         rec = new ResponseRecorder();
         r.handle(req, rec);
         assertEquals(OK, rec.getStatus());

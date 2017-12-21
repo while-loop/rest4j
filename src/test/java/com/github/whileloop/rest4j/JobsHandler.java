@@ -85,7 +85,7 @@ public class JobsHandler {
     }
 
     private void getAll(HttpRequest req, HttpResponse resp) throws IOException {
-        resp.headers.set("Content-Type", "application/json");
+        resp.setHeader("Content-Type", "application/json");
         resp.write(GSON.toJson(store.values()).getBytes());
     }
 

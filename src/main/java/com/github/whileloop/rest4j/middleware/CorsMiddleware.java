@@ -7,9 +7,9 @@ public class CorsMiddleware implements Middleware {
     @Override
     public Handler handle(Handler next) {
         return ((req, resp) -> {
-            resp.headers.set("Access-Control-Allow-Origin", "*");
-            resp.headers.set("Access-Control-Allow-Methods", "*");
-            resp.headers.add("Access-Control-Allow-Headers", "Origin", "X-Requested-With", "Content-Type", "Accept");
+            resp.setHeader("Access-Control-Allow-Origin", "*");
+            resp.setHeader("Access-Control-Allow-Methods", "*");
+            resp.addToHeader("Access-Control-Allow-Headers", "Origin", "X-Requested-With", "Content-Type", "Accept");
             next.handle(req, resp);
         });
     }

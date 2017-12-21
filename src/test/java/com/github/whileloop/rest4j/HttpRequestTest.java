@@ -1,6 +1,9 @@
 package com.github.whileloop.rest4j;
 
+import com.github.whileloop.rest4j.test.RequestRecorder;
 import org.junit.Test;
+
+import java.net.MalformedURLException;
 
 import static org.junit.Assert.*;
 
@@ -11,6 +14,6 @@ public class HttpRequestTest {
 
     @Test
     public void read() {
-        HttpRequest req = new HttpRequest();
+        HttpRequest req = new RequestRecorder();
     }
 }

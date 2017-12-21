@@ -23,9 +23,9 @@ public class Example {
 
         Router r = new Router();
         r.handle("/", (req, resp) -> {
-            String raddr = req.remoteAddr();
+            String raddr = req.remoteAddr().getHostName();
 
-            resp.headers.set("Content-Type", "text/plain");
+            resp.setHeader("Content-Type", "text/plain");
             resp.write("hello " + raddr + "!!");
         });
         r.handle("/{uuid}", Example::update).setMethods(PUT);

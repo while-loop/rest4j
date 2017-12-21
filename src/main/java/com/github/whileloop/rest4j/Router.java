@@ -62,9 +62,10 @@ public class Router implements Handler {
 
     public Router handle(String rootPath, Router router) {
         if (this == router) {
-            System.err.println("trying to add routes to self");
+            logger.warn("trying to add routes to self");
             return this;
         }
+
         for (Route r : router.routes) {
             r.path = rootPath + r.path;
             handle(r);

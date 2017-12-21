@@ -103,7 +103,7 @@ public class FileHandler implements Handler {
         }
 
         if (ct != null) {
-            resp.headers.set("Content-Type", ct);
+            resp.setHeader("Content-Type", ct);
         }
 
         resp.writeHeader(OK);

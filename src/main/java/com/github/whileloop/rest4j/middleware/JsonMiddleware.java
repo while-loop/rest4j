@@ -11,15 +11,16 @@ public class JsonMiddleware implements Middleware {
     @Override
     public Handler handle(Handler next) {
         return (req, resp) -> {
-            String cl = req.headers.getFirst("Content-Length");
-            String ct = req.headers.getFirst("Content-Type");
+            String cl = req.getFirstHeader("Content-Length");
+            String ct = req.getFirstHeader("Content-Type");
             if (cl != null || ct != null) {
                 if (ct == null || !ct.contains("application/json")) {
                     resp.error(UNSUPPORTED_MEDIA_TYPE, ct);
+                    return;
                 }
             }
 
-            resp.headers.set("Content-Type", "application/json");
+            resp.setHeader("Content-Type", "application/json");
             next.handle(req, resp);
         };
     }

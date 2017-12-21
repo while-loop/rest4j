@@ -1,6 +1,7 @@
 package com.github.whileloop.rest4j.middleware;
 
 import com.github.whileloop.rest4j.HttpRequest;
+import com.github.whileloop.rest4j.test.RequestRecorder;
 import com.github.whileloop.rest4j.test.ResponseRecorder;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -18,9 +19,9 @@ public class LoggerMiddlewareTest {
         Logger mockedLogger = mock(Logger.class);
         LoggerMiddleware l = new LoggerMiddleware(mockedLogger);
 
-        ResponseRecorder rec = new ResponseRecorder(null);
+        ResponseRecorder rec = new ResponseRecorder();
 
-        l.handle((req, resp) -> resp.writeHeader(OK)).handle(new HttpRequest(GET, "http://localhost/"), rec);
+        l.handle((req, resp) -> resp.writeHeader(OK)).handle(new RequestRecorder(GET, "http://localhost/"), rec);
 
         verify(mockedLogger).info(String.format("%-7s %-6s %d %s", "GET", "0ms", 200, "/"));
         assertEquals(OK, rec.getStatus());
@@ -29,6 +30,7 @@ public class LoggerMiddlewareTest {
     @Test
     public void testNullLogCantBeSet() throws Exception {
         LoggerMiddleware l = new LoggerMiddleware();
-        l.handle((req, resp) -> resp.writeHeader(OK)).handle(new HttpRequest(), new ResponseRecorder(null));
+        RequestRecorder rec = new RequestRecorder(GET, "http://localhost/");
+        l.handle((req, resp) -> resp.writeHeader(OK)).handle(rec, new ResponseRecorder());
     }
 }

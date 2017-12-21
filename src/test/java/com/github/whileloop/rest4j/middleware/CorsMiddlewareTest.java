@@ -2,6 +2,8 @@ package com.github.whileloop.rest4j.middleware;
 
 import com.github.whileloop.rest4j.HttpHeaders;
 import com.github.whileloop.rest4j.HttpRequest;
+import com.github.whileloop.rest4j.HttpResponse;
+import com.github.whileloop.rest4j.test.RequestRecorder;
 import com.github.whileloop.rest4j.test.ResponseRecorder;
 import org.junit.Test;
 
@@ -17,19 +19,19 @@ public class CorsMiddlewareTest {
     public void testCorsSetsBeforeHandler() throws Exception {
         CorsMiddleware c = new CorsMiddleware();
 
-        ResponseRecorder rec = new ResponseRecorder(null);
+        ResponseRecorder rec = new ResponseRecorder();
         c.handle((req, resp) -> {
-            assertCors(resp.headers);
+            assertCors(resp);
             resp.writeHeader(OK);
-        }).handle(new HttpRequest(GET, "http://localhost/"), rec);
+        }).handle(new RequestRecorder(GET, "http://localhost/"), rec);
 
-        assertCors(rec.headers);
+        assertCors(rec);
     }
 
-    private void assertCors(HttpHeaders headers){
-        assertEquals("*", headers.getFirst("Access-Control-Allow-Origin"));
-        assertEquals("*", headers.getFirst("Access-Control-Allow-Methods"));
+    private void assertCors(HttpResponse resp){
+        assertEquals("*", resp.getFirstHeader("Access-Control-Allow-Origin"));
+        assertEquals("*", resp.getFirstHeader("Access-Control-Allow-Methods"));
         assertEquals(Arrays.asList("Origin", "X-Requested-With", "Content-Type", "Accept"),
-                headers.get("Access-Control-Allow-Headers"));
+                resp.getHeader("Access-Control-Allow-Headers"));
     }
 }

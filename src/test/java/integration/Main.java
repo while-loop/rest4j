@@ -23,7 +23,7 @@ import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
-@Ignore("httpServer not working")
+//@Ignore("httpServer not working")
 public class Main {
     private static HttpServer server;
     private static FileHandler fh;
@@ -32,7 +32,7 @@ public class Main {
 
     @BeforeClass
     public static void beforeClass() throws IOException, URISyntaxException {
-        Unirest.setTimeouts(250, 250);
+        Unirest.setTimeouts(100000, 100000);
         UsersService us = new UsersService(new UsersService.Datastore());
         PostsService ps = new PostsService(new PostsService.Datastore());
 
@@ -63,16 +63,16 @@ public class Main {
     @Test
     public void testFileHandler() throws UnirestException {
         HttpResponse<String> resp = Unirest.post(base + "/index.html").asString();
-        assertThat(resp.getBody(), containsString("<title>rest4j</title>"));
         assertEquals(200, resp.getStatus());
-        assertEquals("text/html", resp.getHeaders().getFirst("Content-Type"));
+        assertEquals("text/html", resp.getHeaders().getFirst("Content-type"));
+        assertThat(resp.getBody(), containsString("<title>rest4j</title>"));
     }
 
     @Test
     public void testFileHandler2() throws UnirestException {
         HttpResponse<String> resp = Unirest.post(base + "/index.html").asString();
-        assertThat(resp.getBody(), containsString("<title>rest4j</title>"));
         assertEquals(200, resp.getStatus());
-        assertEquals("text/html", resp.getHeaders().getFirst("Content-Type"));
+        assertEquals("text/html", resp.getHeaders().getFirst("Content-type"));
+        assertThat(resp.getBody(), containsString("<title>rest4j</title>"));
     }
 }

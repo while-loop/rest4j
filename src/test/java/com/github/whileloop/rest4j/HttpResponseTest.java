@@ -1,5 +1,6 @@
 package com.github.whileloop.rest4j;
 
+import com.github.whileloop.rest4j.test.ResponseRecorder;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -13,15 +14,6 @@ public class HttpResponseTest {
 
     @Test
     public void write() {
-        HttpResponse resp = new HttpResponse(null) {
-            public void write(int b) throws IOException {
-
-            }
-
-            @Override
-            public void writeHeader(HttpStatus status) {
-
-            }
-        };
+        HttpResponse resp = new ResponseRecorder();
     }
 }
