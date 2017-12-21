@@ -23,7 +23,6 @@ import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
-//@Ignore("httpServer not working")
 public class Main {
     private static HttpServer server;
     private static FileHandler fh;
@@ -32,7 +31,7 @@ public class Main {
 
     @BeforeClass
     public static void beforeClass() throws IOException, URISyntaxException {
-        Unirest.setTimeouts(100000, 100000);
+        Unirest.setTimeouts(250, 250);
         UsersService us = new UsersService(new UsersService.Datastore());
         PostsService ps = new PostsService(new PostsService.Datastore());
 
@@ -51,7 +50,6 @@ public class Main {
 
         server.start();
         base = "http://localhost:" + server.getAddress().getPort();
-        System.out.println("lll");
     }
 
     @AfterClass
@@ -69,7 +67,7 @@ public class Main {
     }
 
     @Test
-    public void testFileHandler2() throws UnirestException {
+    public void testUsersService() throws UnirestException {
         HttpResponse<String> resp = Unirest.post(base + "/index.html").asString();
         assertEquals(200, resp.getStatus());
         assertEquals("text/html", resp.getHeaders().getFirst("Content-type"));
