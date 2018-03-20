@@ -13,8 +13,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Initial Release
 
-[1.0.0]: https://github.com/while-loop/rest4j/releases/tag/1.0.0
-[1.0.1]: https://github.com/while-loop/rest4j/compare/1.0.0...1.0.1
-[unreleased]: https://github.com/while-loop/rest4j/compare/1.0.0...master
+[1.0.0]: https://github.com/while-loop/rest4j/releases/tag/v1.0.0
+[1.0.1]: https://github.com/while-loop/rest4j/compare/v1.0.0...v1.0.1
+[unreleased]: https://github.com/while-loop/rest4j/compare/v1.0.0...master
 
 [comment]: # (Added, Changed, Removed)
