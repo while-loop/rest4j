@@ -24,13 +24,10 @@ Inspiration from the Go stdlib http package.
 Download
 --------
 
-**Note:** be sure to have `SNAPSHOT`s enable in your profile and [maven-settings.xml](https://gist.github.com/ktuukkan/8cf2de1e915185118c60)
-file.
-
 #### Gradle
 ```gradle
 dependencies {
-    compile 'com.github.while-loop:rest4j:1.0.0-SNAPSHOT'
+    compile 'com.github.while-loop:rest4j:1.0.0'
 }
 ```
 
@@ -39,7 +36,7 @@ dependencies {
 <dependency>
     <groupId>com.github.while-loop</groupId>
     <artifactId>rest4j</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 
