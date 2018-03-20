@@ -1,12 +1,10 @@
 package com.github.whileloop.rest4j.test;
 
-import com.github.whileloop.rest4j.*;
-import org.omg.CORBA.PRIVATE_MEMBER;
-import sun.dc.pr.PRError;
+import com.github.whileloop.rest4j.HttpMethod;
+import com.github.whileloop.rest4j.HttpRequest;
+import com.github.whileloop.rest4j.HttpStatus;
 
-import javax.naming.ldap.PagedResultsControl;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -32,7 +30,7 @@ public class RequestRecorder implements HttpRequest {
         this.url = new URL(url);
     }
 
-    public RequestRecorder(){
+    public RequestRecorder() {
     }
 
     @Override

@@ -1,10 +1,8 @@
 package com.github.whileloop.rest4j.test;
 
-import com.github.whileloop.rest4j.HttpHeaders;
 import com.github.whileloop.rest4j.HttpResponse;
 import com.github.whileloop.rest4j.HttpStatus;
 
-import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.List;

@@ -14,7 +14,7 @@ import java.util.List;
 public class SunResponse implements HttpResponse {
     private Logger logger = LoggerFactory.getLogger(SunResponse.class);
     HttpExchange ex;
-    private HttpStatus sentStatus = null;
+    private HttpStatus sentStatus = HttpStatus.OK;
     boolean sentHeaders = false;
 
     SunResponse(HttpExchange ex) {

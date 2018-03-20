@@ -1,7 +1,5 @@
 package com.github.whileloop.rest4j.middleware;
 
-import com.github.whileloop.rest4j.HttpHeaders;
-import com.github.whileloop.rest4j.HttpRequest;
 import com.github.whileloop.rest4j.HttpResponse;
 import com.github.whileloop.rest4j.test.RequestRecorder;
 import com.github.whileloop.rest4j.test.ResponseRecorder;
@@ -28,7 +26,7 @@ public class CorsMiddlewareTest {
         assertCors(rec);
     }
 
-    private void assertCors(HttpResponse resp){
+    private void assertCors(HttpResponse resp) {
         assertEquals("*", resp.getFirstHeader("Access-Control-Allow-Origin"));
         assertEquals("*", resp.getFirstHeader("Access-Control-Allow-Methods"));
         assertEquals(Arrays.asList("Origin", "X-Requested-With", "Content-Type", "Accept"),

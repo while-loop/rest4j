@@ -9,9 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import static com.github.whileloop.rest4j.HttpStatus.INTERNAL_SERVER_ERROR;
-import static com.github.whileloop.rest4j.HttpStatus.METHOD_NOT_ALLOWED;
-import static com.github.whileloop.rest4j.HttpStatus.NOT_FOUND;
+import static com.github.whileloop.rest4j.HttpStatus.*;
 
 public class Router implements Handler {
 
@@ -52,10 +50,6 @@ public class Router implements Handler {
         return r;
     }
 
-    public Route handleFunc(String path, Handler handlerFunc) {
-        return handle(path, handlerFunc);
-    }
-
     public Route handle(String path, Handler handler) {
         return handle(new Route(path, handler));
     }
@@ -78,10 +72,22 @@ public class Router implements Handler {
         return this;
     }
 
-//    @Override
-//    public String toString() {
-//        return GSON.toJson(this);
-//    }
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Root: ").append(root).append(System.lineSeparator());
+        sb.append("Middlewares: ");
+        for (Middleware m:middlewares) {
+            sb.append(m.getClass().getSimpleName()).append(" ");
+        }
+        sb.append(System.lineSeparator());
+        sb.append("Routes: ").append(System.lineSeparator());
+        for (Route m:routes) {
+            sb.append(m).append(System.lineSeparator());
+        }
+        sb.append(System.lineSeparator());
+        return sb.toString();
+    }
 
     @Override
     public void handle(HttpRequest req, HttpResponse resp) throws Exception {

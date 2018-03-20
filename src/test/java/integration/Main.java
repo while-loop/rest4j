@@ -5,13 +5,11 @@ import com.github.whileloop.rest4j.handler.FileHandler;
 import com.github.whileloop.rest4j.middleware.JsonMiddleware;
 import com.github.whileloop.rest4j.middleware.LoggerMiddleware;
 import com.github.whileloop.rest4j.router.sun.SunRouter;
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.Unirest;
+import com.google.gson.Gson;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.sun.net.httpserver.HttpServer;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -19,58 +17,42 @@ import java.net.InetSocketAddress;
 import java.net.URISyntaxException;
 import java.util.concurrent.Executors;
 
-import static org.hamcrest.Matchers.containsString;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-
 public class Main {
-    private static HttpServer server;
+    public static Gson GSON = new Gson();
+
     private static FileHandler fh;
-    private static String base;
+    private static Router apiRouter;
 
 
-    @BeforeClass
-    public static void beforeClass() throws IOException, URISyntaxException {
-        Unirest.setTimeouts(250, 250);
+    @Before
+    public void before() throws IOException, URISyntaxException {
         UsersService us = new UsersService(new UsersService.Datastore());
-        PostsService ps = new PostsService(new PostsService.Datastore());
+        JobsService js = new JobsService();
 
         String dir = Main.class.getClassLoader().getResource("www").toExternalForm();
         fh = new FileHandler(dir);
 
-        Router router = new Router("/v1");
-        router.use(new LoggerMiddleware(), new JsonMiddleware());
-        router.handle("/users", us.getRoutes());
-        router.handle("/posts", ps.getRoutes());
-
-        server = HttpServer.create(new InetSocketAddress(0), 0);
-        server.createContext("/api", new SunRouter(router));
-        server.createContext("/", new SunRouter(fh.getRouter()));
-        server.setExecutor(Executors.newSingleThreadExecutor());
-
-        server.start();
-        base = "http://localhost:" + server.getAddress().getPort();
+        apiRouter = new Router("/api/v1");
+        apiRouter.use(new LoggerMiddleware(), new JsonMiddleware());
+        apiRouter.handle("/jobs", js.getRoutes());
+        apiRouter.handle("/users", us.getRoutes());
     }
 
-    @AfterClass
-    public static void afterClass() {
-        server.stop(0);
+    @After
+    public void after() {
         fh.close();
     }
 
     @Test
-    public void testFileHandler() throws UnirestException {
-        HttpResponse<String> resp = Unirest.post(base + "/index.html").asString();
-        assertEquals(200, resp.getStatus());
-        assertEquals("text/html", resp.getHeaders().getFirst("Content-type"));
-        assertThat(resp.getBody(), containsString("<title>rest4j</title>"));
-    }
+    public void testSunRouter() throws IOException, UnirestException {
+        HttpServer server = HttpServer.create(new InetSocketAddress(0), 0);
+        server.createContext("/api", new SunRouter(apiRouter));
+        server.createContext("/", new SunRouter(fh.getRouter()));
+        server.setExecutor(Executors.newSingleThreadExecutor());
 
-    @Test
-    public void testUsersService() throws UnirestException {
-        HttpResponse<String> resp = Unirest.post(base + "/index.html").asString();
-        assertEquals(200, resp.getStatus());
-        assertEquals("text/html", resp.getHeaders().getFirst("Content-type"));
-        assertThat(resp.getBody(), containsString("<title>rest4j</title>"));
+        server.start();
+        String base = "http://localhost:" + server.getAddress().getPort();
+        Runner.test(base);
+        server.stop(0);
     }
 }

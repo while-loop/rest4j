@@ -1,27 +1,28 @@
-package com.github.whileloop.rest4j;
+package integration;
 
+import com.github.whileloop.rest4j.HttpRequest;
+import com.github.whileloop.rest4j.HttpResponse;
+import com.github.whileloop.rest4j.Router;
 import com.google.gson.*;
-import com.sun.net.httpserver.HttpExchange;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.*;
 
 import static com.github.whileloop.rest4j.HttpMethod.*;
 import static com.github.whileloop.rest4j.HttpStatus.*;
+import static integration.Main.GSON;
 
 
-public class JobsHandler {
-    private static Gson GSON = new Gson();
+public class JobsService {
     Map<String, JsonObject> store = new HashMap<>();
 
     Router getRoutes() {
         Router r = new Router();
-        r.handleFunc("/", this::getAll);
-        r.handleFunc("/", this::create).setMethods(POST);
-        r.handleFunc("/{uuid}", this::get);
-        r.handleFunc("/{uuid}", this::update).setMethods(PUT);
-        r.handleFunc("/{uuid}", this::delete).setMethods(DELETE);
+        r.handle("/", this::getAll);
+        r.handle("/", this::create).setMethods(POST);
+        r.handle("/:uuid", this::get);
+        r.handle("/:uuid", this::update).setMethods(PUT);
+        r.handle("/:uuid", this::delete).setMethods(DELETE);
         return r;
     }
 
@@ -37,7 +38,7 @@ public class JobsHandler {
             return;
         }
 
-        JsonObject obj = new JsonParser().parse(new InputStreamReader(request.getRawBody())).getAsJsonObject();
+        JsonObject obj = request.bodyAsJson().getAsJsonObject();
         store.put(uuid, obj);
         response.write(obj.toString());
     }
@@ -48,7 +49,6 @@ public class JobsHandler {
             response.error(BAD_REQUEST, asJsonObject("error", "missing uuid").toString());
             return;
         }
-
 
         if (!store.containsKey(uuid)) {
             response.error(NOT_FOUND, asJsonObject("error", "object not found: " + uuid).toString());
@@ -74,10 +74,10 @@ public class JobsHandler {
     }
 
     private void create(HttpRequest request, HttpResponse response) throws IOException {
-        JsonObject obj = new JsonParser().parse(new InputStreamReader(request.getRawBody())).getAsJsonObject();
+        JsonObject obj = request.bodyAsJson().getAsJsonObject();
 
         String uuid = UUID.randomUUID().toString();
-        obj.addProperty("uuid", UUID.randomUUID().toString());
+        obj.addProperty("uuid", uuid);
         store.put(uuid, obj);
 
         response.writeHeader(CREATED);

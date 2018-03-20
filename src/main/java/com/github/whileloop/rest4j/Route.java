@@ -1,7 +1,5 @@
 package com.github.whileloop.rest4j;
 
-import com.sun.net.httpserver.HttpExchange;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -10,7 +8,7 @@ import java.util.Map;
 import static com.github.whileloop.rest4j.HttpMethod.GET;
 
 public class Route {
-    String path = "";
+    String path;
     transient Handler handler;
     List<HttpMethod> methods = Arrays.asList(GET);
     Map<String, String> vars = new HashMap<>();
@@ -23,15 +21,6 @@ public class Route {
             this.methods = Arrays.asList(methods);
         }
     }
-
-    public Route(Route route) {
-        this.path = route.path;
-        this.methods = route.methods;
-        this.handler = route.handler;
-        this.strictSlash = route.strictSlash;
-        this.vars = new HashMap<>(route.vars);
-    }
-
 
     public Route setStrictSlash(boolean strictSlash) {
         this.strictSlash = strictSlash;
@@ -71,13 +60,12 @@ public class Route {
                 continue;
             }
 
-            if (!rPath.substring(0, i).equals(mPath.substring(0, i))){
+            if (!rPath.substring(0, i).equals(mPath.substring(0, i))) {
                 break;
             }
 
             rPath = rPath.substring(i + 1); //+1 for ':'
             mPath = mPath.substring(i);
-
 
 
             // found var.. look for end of string or first /
@@ -95,11 +83,14 @@ public class Route {
 
         return rPath.equals(mPath);
     }
-//
-//    @Override
-//    public String toString() {
-//        return GSON.toJson(this);
-//    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("\tPath: ").append(path).append(System.lineSeparator());
+        sb.append("\tMethods: ").append(methods).append(System.lineSeparator());
+        return sb.toString();
+    }
 
     static int findEnd(String path) {
         int end = path.indexOf('/');
