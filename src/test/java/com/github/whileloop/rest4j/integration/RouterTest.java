@@ -59,6 +59,7 @@ public abstract class RouterTest {
         apiRouter.handle("/users", us.getRoutes());
 
         base = before(apiRouter, fh).replaceAll("/*$", "");
+        Thread.sleep(100);
     }
 
     @After
