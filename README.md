@@ -62,7 +62,7 @@ public class Example {
             resp.headers.set("Content-Type", "text/plain");
             resp.write("hello " + raddr + "!!");
         });
-        r.handle("/{uuid}", Example::update).setMethods(PUT);
+        r.handle("/:uuid", Example::update).setMethods(PUT);
 
         server.createContext("/", new SunRouter(r)); // BYOS
         server.setExecutor(Executors.newSingleThreadExecutor());
@@ -134,13 +134,13 @@ r.use(new LoggerMiddleware(),
 Router v1 = new Router();
 Router usersR = new Router();
 usersR.handle("/", this::getAll);                               // GET /v1/users
-usersR.handle("/{uuid}", this::updateUser).setMethods(PUT);     // PUT /v1/users/{uuid}
-usersR.handle("/{uuid}", this::deleteUuser).setMethods(DELETE); // DELETE /v1/users/{uuid}
+usersR.handle("/:uuid", this::updateUser).setMethods(PUT);     // PUT /v1/users/:uuid
+usersR.handle("/:uuid", this::deleteUuser).setMethods(DELETE); // DELETE /v1/users/:uuid
 
 Router postsR = new Router();
 usersR.handle("/", this::getAll);                                   // GET /v1/posts
-usersR.handle("/{postId}", this::updatePost).setMethods(PUT);       // PUT /v1/posts/{uuid}
-usersR.handle("/{postId}", this::deletePost).setMethods(DELETE);    // DELETE /v1/posts/{uuid}
+usersR.handle("/:postId", this::updatePost).setMethods(PUT);       // PUT /v1/posts/:uuid
+usersR.handle("/:postId", this::deletePost).setMethods(DELETE);    // DELETE /v1/posts/:uuid
 
 v1.handle("/users", usersR); // /v1/users
 v1.handle("/posts", usersR); // /v1/posts
