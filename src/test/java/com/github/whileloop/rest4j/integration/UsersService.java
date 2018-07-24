@@ -1,4 +1,4 @@
-package integration;
+package com.github.whileloop.rest4j.integration;
 
 import com.github.whileloop.rest4j.HttpRequest;
 import com.github.whileloop.rest4j.HttpResponse;
