@@ -1,12 +1,21 @@
-package integration;
+package com.github.whileloop.rest4j.integration;
 
+import com.github.whileloop.rest4j.HttpRequest;
 import com.github.whileloop.rest4j.HttpStatus;
+import com.github.whileloop.rest4j.Router;
+import com.github.whileloop.rest4j.handler.FileHandler;
+import com.github.whileloop.rest4j.middleware.JsonMiddleware;
+import com.github.whileloop.rest4j.middleware.LoggerMiddleware;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.json.JSONArray;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.*;
@@ -14,22 +23,51 @@ import static org.junit.Assert.*;
 /**
  * Created by aalves on 3/20/18
  */
-public class Runner {
-    private String base;
+public abstract class RouterTest {
+    public static Gson GSON = new Gson();
 
-    public Runner(String base) throws UnirestException {
-        Unirest.setTimeouts(250, 250000);
-        this.base = base;
+    private static String base;
+    private static FileHandler fh;
+    private static Router apiRouter;
 
-        testJobsCRUD();
-        testFileHandler();
-        testUsersService();
+    /**
+     * before class
+     *
+     * @param apiRouter   /api router
+     * @param fileHandler /* static file handler
+     * @return address which to access the http server. http(s)://host:port
+     */
+    public abstract String before(Router apiRouter, FileHandler fileHandler) throws Exception;
+
+    /**
+     * after class
+     */
+    public abstract void after();
+
+    @Before
+    public void beforeTest() throws Exception {
+        Unirest.setTimeouts(250, 250);
+        UsersService us = new UsersService(new UsersService.Datastore());
+        JobsService js = new JobsService();
+
+        String dir = RouterTest.class.getClassLoader().getResource("www").toExternalForm();
+        fh = new FileHandler(dir);
+
+        apiRouter = new Router("/api/v1");
+        apiRouter.use(new LoggerMiddleware(), new JsonMiddleware());
+        apiRouter.handle("/jobs", js.getRoutes());
+        apiRouter.handle("/users", us.getRoutes());
+
+        base = before(apiRouter, fh).replaceAll("/*$", "");
     }
 
-    public static void test(String base) throws UnirestException {
-        new Runner(base);
+    @After
+    public void afterTest() {
+        fh.close();
+        after();
     }
 
+    @Test
     public void testJobsCRUD() throws UnirestException {
         HttpResponse<JsonNode> resp = Unirest.get(base + "/api/v1/jobs").asJson();
         assertEquals(200, resp.getStatus());
@@ -80,6 +118,7 @@ public class Runner {
         assertEquals(HttpStatus.NOT_FOUND.code(), resp.getStatus());
     }
 
+    @Test
     public void testFileHandler() throws UnirestException {
         HttpResponse<String> resp = Unirest.post(base + "/index.html").asString();
         assertEquals(200, resp.getStatus());
@@ -96,6 +135,7 @@ public class Runner {
         assertEquals(404, resp.getStatus());
     }
 
+    @Test
     public void testUsersService() throws UnirestException {
         JsonObject user = new JsonObject();
         user.addProperty("name", "anthony");

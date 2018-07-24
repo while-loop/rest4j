@@ -1,4 +1,4 @@
-package integration;
+package com.github.whileloop.rest4j.integration;
 
 import com.github.whileloop.rest4j.HttpRequest;
 import com.github.whileloop.rest4j.HttpResponse;
@@ -10,7 +10,7 @@ import java.util.*;
 
 import static com.github.whileloop.rest4j.HttpMethod.*;
 import static com.github.whileloop.rest4j.HttpStatus.*;
-import static integration.Main.GSON;
+import static com.github.whileloop.rest4j.integration.RouterTest.GSON;
 
 
 public class JobsService {
