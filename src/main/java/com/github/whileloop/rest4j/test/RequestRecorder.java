@@ -5,6 +5,7 @@ import com.github.whileloop.rest4j.HttpRequest;
 import com.github.whileloop.rest4j.HttpStatus;
 
 import java.io.InputStream;
+import java.io.StringBufferInputStream;
 import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -33,6 +34,10 @@ public class RequestRecorder implements HttpRequest {
     public RequestRecorder() {
     }
 
+    public void write(String str) {
+        buf.append(str);
+    }
+
     @Override
     public <T> T getParam(String key) {
         return (T) params.get(key);
@@ -55,7 +60,7 @@ public class RequestRecorder implements HttpRequest {
 
     @Override
     public InputStream getRawBody() {
-        return null;
+        return new StringBufferInputStream(buf.toString());
     }
 
     @Override
