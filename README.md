@@ -43,12 +43,12 @@ dependencies {
 Implemented Servers
 -------------------
 
-- com.sun.net.[HttpServer](https://docs.oracle.com/javase/8/docs/jre/api/net/httpserver/spec/com/sun/net/httpserver/HttpServer.html)
+- [com.sun.net.HttpServer](https://docs.oracle.com/javase/8/docs/jre/api/net/httpserver/spec/com/sun/net/httpserver/HttpServer.html)
 
 Usage
 -----
 
-For a full demo example, check the [integration](src/test/java/integration) package
+For a full demo example, check the [integration](src/test/java/com/github/whileloop/rest4j/integration) package
 
 ```java
 public class Example {
