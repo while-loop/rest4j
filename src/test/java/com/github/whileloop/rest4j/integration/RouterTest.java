@@ -46,7 +46,7 @@ public abstract class RouterTest {
 
     @Before
     public void beforeTest() throws Exception {
-        Unirest.setTimeouts(250, 250);
+        Unirest.setTimeouts(1000,1000);
         UsersService us = new UsersService(new UsersService.Datastore());
         JobsService js = new JobsService();
 
