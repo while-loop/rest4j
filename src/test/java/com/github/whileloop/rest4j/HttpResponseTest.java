@@ -1,13 +1,11 @@
 package com.github.whileloop.rest4j;
 
-import com.github.whileloop.rest4j.test.RequestRecorder;
 import com.github.whileloop.rest4j.test.ResponseRecorder;
 import org.junit.Test;
 
 import java.io.IOException;
 
-import static com.github.whileloop.rest4j.HttpRequest.GSON;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by aalves on 12/18/17
