@@ -54,7 +54,7 @@ public class Route {
         }
 
         int i = 0;
-        while (rPath.length() > 0 && i < rPath.length()) {
+        while (rPath.length() > 0 && i < rPath.length() && i < mPath.length()) {
             if (rPath.charAt(i) != ':') {
                 i++;
                 continue;

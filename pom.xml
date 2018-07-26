@@ -6,7 +6,7 @@
 
     <groupId>com.github.while-loop</groupId>
     <artifactId>rest4j</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
 
     <developers>
         <developer>

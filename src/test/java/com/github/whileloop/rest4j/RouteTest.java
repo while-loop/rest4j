@@ -1,11 +1,12 @@
 package com.github.whileloop.rest4j;
 
+import com.github.whileloop.rest4j.test.RequestRecorder;
 import org.junit.Test;
 
+import java.net.MalformedURLException;
 import java.util.HashMap;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class RouteTest {
     @Test
@@ -30,5 +31,27 @@ public class RouteTest {
         T t = new T();
 
         Route r = new Route("", t::getChores);
+    }
+
+    @Test
+    public void testLengthNotOutOfBoundsParam() throws MalformedURLException {
+        Route r = new Route("/some/very/long/:path", (a, b) -> {
+        });
+
+        assertFalse(r.matches(new RequestRecorder(HttpMethod.GET, "http://localhost/short")));
+
+        assertFalse(r.matches(new RequestRecorder(HttpMethod.GET, "http://localhost/some/very/long/")));
+        assertTrue(r.matches(new RequestRecorder(HttpMethod.GET, "http://localhost/some/very/long/123")));
+    }
+
+    @Test
+    public void testLengthNotOutOfBounds() throws MalformedURLException {
+        Route r = new Route("/some/very/long/path", (a, b) -> {
+        });
+
+        assertFalse(r.matches(new RequestRecorder(HttpMethod.GET, "http://localhost/short")));
+
+        assertFalse(r.matches(new RequestRecorder(HttpMethod.GET, "http://localhost/some/very/long/")));
+        assertTrue(r.matches(new RequestRecorder(HttpMethod.GET, "http://localhost/some/very/long/path")));
     }
 }
