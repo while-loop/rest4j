@@ -2,7 +2,6 @@ package com.github.whileloop.rest4j.test;
 
 import com.github.whileloop.rest4j.HttpMethod;
 import com.github.whileloop.rest4j.HttpRequest;
-import com.github.whileloop.rest4j.HttpStatus;
 
 import java.io.InputStream;
 import java.io.StringBufferInputStream;
@@ -13,22 +12,26 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.github.whileloop.rest4j.HttpStatus.OK;
-
 /**
  * Created by aalves on 12/18/17
  */
 public class RequestRecorder implements HttpRequest {
     private StringBuffer buf = new StringBuffer();
-    private HttpStatus status = OK;
     private HttpHeaders headers = new HttpHeaders();
     private Map<String, Object> params = new HashMap<>();
     private HttpMethod method;
     private URL url;
 
     public RequestRecorder(HttpMethod method, String url) throws MalformedURLException {
+        this(method, url, null);
+    }
+
+    public RequestRecorder(HttpMethod method, String url, String body) throws MalformedURLException {
         this.method = method;
         this.url = new URL(url);
+        if (body != null) {
+            this.buf.append(body);
+        }
     }
 
     public RequestRecorder() {

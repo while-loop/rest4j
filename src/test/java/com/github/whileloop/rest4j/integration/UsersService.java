@@ -30,7 +30,7 @@ public class UsersService {
     }
 
     private void createUser(HttpRequest req, HttpResponse resp) throws IOException {
-        JsonObject obj = req.bodyAsJson().getAsJsonObject();
+        JsonObject obj = req.asJson().getAsJsonObject();
         store.create(obj);
 
         resp.writeHeader(HttpStatus.CREATED);

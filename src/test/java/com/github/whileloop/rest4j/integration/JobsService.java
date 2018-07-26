@@ -38,7 +38,7 @@ public class JobsService {
             return;
         }
 
-        JsonObject obj = request.bodyAsJson().getAsJsonObject();
+        JsonObject obj = request.asJson().getAsJsonObject();
         store.put(uuid, obj);
         response.write(obj.toString());
     }
@@ -74,7 +74,7 @@ public class JobsService {
     }
 
     private void create(HttpRequest request, HttpResponse response) throws IOException {
-        JsonObject obj = request.bodyAsJson().getAsJsonObject();
+        JsonObject obj = request.asJson().getAsJsonObject();
 
         String uuid = UUID.randomUUID().toString();
         obj.addProperty("uuid", uuid);

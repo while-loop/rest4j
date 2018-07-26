@@ -31,7 +31,7 @@ public abstract class RouterTest {
     private static Router apiRouter;
 
     /**
-     * before class
+     * before test
      *
      * @param apiRouter   /api router
      * @param fileHandler /* static file handler
@@ -40,13 +40,13 @@ public abstract class RouterTest {
     public abstract String before(Router apiRouter, FileHandler fileHandler) throws Exception;
 
     /**
-     * after class
+     * after test
      */
     public abstract void after();
 
     @Before
     public void beforeTest() throws Exception {
-        Unirest.setTimeouts(250, 250);
+        Unirest.setTimeouts(1000,1000);
         UsersService us = new UsersService(new UsersService.Datastore());
         JobsService js = new JobsService();
 
@@ -59,7 +59,7 @@ public abstract class RouterTest {
         apiRouter.handle("/users", us.getRoutes());
 
         base = before(apiRouter, fh).replaceAll("/*$", "");
-        Thread.sleep(100);
+        Thread.sleep(250);
     }
 
     @After
@@ -69,7 +69,7 @@ public abstract class RouterTest {
     }
 
     @Test
-    public void testJobsCRUD() throws UnirestException {
+    public void testJobsCRUD() throws Exception {
         HttpResponse<JsonNode> resp = Unirest.get(base + "/api/v1/jobs").asJson();
         assertEquals(200, resp.getStatus());
         assertEquals("application/json", resp.getHeaders().getFirst("Content-type"));
@@ -109,6 +109,8 @@ public abstract class RouterTest {
 
         assertEquals(HttpStatus.NO_CONTENT.code(), resp2.getStatus());
 
+        afterTest();
+        beforeTest();
         resp = Unirest.post(base + "/api/v1/jobs/123").asJson();
         assertEquals(HttpStatus.METHOD_NOT_ALLOWED.code(), resp.getStatus());
 
