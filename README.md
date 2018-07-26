@@ -27,7 +27,7 @@ Download
 #### Gradle
 ```gradle
 dependencies {
-    compile 'com.github.while-loop:rest4j:1.0.2'
+    compile 'com.github.while-loop:rest4j:1.0.3'
 }
 ```
 
@@ -36,7 +36,7 @@ dependencies {
 <dependency>
     <groupId>com.github.while-loop</groupId>
     <artifactId>rest4j</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
 </dependency>
 ```
 
