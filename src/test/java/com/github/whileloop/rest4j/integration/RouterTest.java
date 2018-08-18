@@ -1,6 +1,5 @@
 package com.github.whileloop.rest4j.integration;
 
-import com.github.whileloop.rest4j.HttpRequest;
 import com.github.whileloop.rest4j.HttpStatus;
 import com.github.whileloop.rest4j.Router;
 import com.github.whileloop.rest4j.handler.FileHandler;
@@ -46,7 +45,7 @@ public abstract class RouterTest {
 
     @Before
     public void beforeTest() throws Exception {
-        Unirest.setTimeouts(1000,1000);
+        Unirest.setTimeouts(1000, 1000);
         UsersService us = new UsersService(new UsersService.Datastore());
         JobsService js = new JobsService();
 
@@ -72,7 +71,8 @@ public abstract class RouterTest {
     public void testJobsCRUD() throws Exception {
         HttpResponse<JsonNode> resp = Unirest.get(base + "/api/v1/jobs").asJson();
         assertEquals(200, resp.getStatus());
-        assertEquals("application/json", resp.getHeaders().getFirst("Content-type"));
+
+        assertEquals("application/json", getHeader(resp, "Content-Type"));
         assertEquals("[]", resp.getBody().toString());
 
         JsonObject job = new JsonObject();
@@ -98,7 +98,7 @@ public abstract class RouterTest {
 
         resp = Unirest.get(base + "/api/v1/jobs").asJson();
         assertEquals(200, resp.getStatus());
-        assertEquals("application/json", resp.getHeaders().getFirst("Content-type"));
+        assertEquals("application/json", getHeader(resp, "Content-Type"));
 
         JSONArray arr = resp.getBody().getArray();
         assertEquals(1, arr.length());
@@ -125,13 +125,13 @@ public abstract class RouterTest {
     public void testFileHandler() throws UnirestException {
         HttpResponse<String> resp = Unirest.post(base + "/index.html").asString();
         assertEquals(200, resp.getStatus());
-        assertEquals("text/html", resp.getHeaders().getFirst("Content-type"));
+        assertEquals("text/html", getHeader(resp, "Content-Type"));
         assertThat(resp.getBody(), containsString("<title>rest4j</title>"));
 
         resp = Unirest.post(base + "/stylesheets/bootstrap.min.css").asString();
         assertEquals(200, resp.getStatus());
-        assertEquals("21", resp.getHeaders().getFirst("Content-length"));
-        assertEquals("text/css", resp.getHeaders().getFirst("Content-type"));
+        assertEquals("21", getHeader(resp, "Content-Length"));
+        assertEquals("text/css", getHeader(resp, "Content-Type"));
         assertEquals("bootstrap.min.css.map", resp.getBody());
 
         resp = Unirest.post(base + "/nowhat.html").asString();
@@ -155,5 +155,39 @@ public abstract class RouterTest {
                 .get(base + "/api/v1/users")
                 .asJson();
         assertEquals(1, resp.getBody().getArray().length());
+    }
+
+
+    private String getHeader(HttpResponse resp, String field) {
+        String type = resp.getHeaders().getFirst(field);
+        if (type == null) {
+            type = resp.getHeaders().getFirst(normalize(field));
+        }
+
+        return type;
+    }
+
+    private String normalize(String var1) {
+        if (var1 == null) {
+            return null;
+        } else {
+            int var2 = var1.length();
+            if (var2 == 0) {
+                return var1;
+            } else {
+                char[] var3 = var1.toCharArray();
+                if (var3[0] >= 'a' && var3[0] <= 'z') {
+                    var3[0] = (char) (var3[0] - 32);
+                }
+
+                for (int var4 = 1; var4 < var2; ++var4) {
+                    if (var3[var4] >= 'A' && var3[var4] <= 'Z') {
+                        var3[var4] = (char) (var3[var4] + 32);
+                    }
+                }
+
+                return new String(var3);
+            }
+        }
     }
 }

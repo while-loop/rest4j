@@ -22,16 +22,6 @@ public class SunResponse implements HttpResponse {
     }
 
     @Override
-    public <T> T getParam(String key) {
-        return (T) ex.getAttribute(key);
-    }
-
-    @Override
-    public <T> void setParam(String key, T object) {
-        ex.setAttribute(key, object);
-    }
-
-    @Override
     public List<String> getHeader(String field) {
         return ex.getResponseHeaders().get(field);
     }

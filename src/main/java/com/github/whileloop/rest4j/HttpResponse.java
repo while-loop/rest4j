@@ -1,5 +1,7 @@
 package com.github.whileloop.rest4j;
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -19,6 +21,16 @@ public interface HttpResponse extends HttpContext {
     void writeHeader(HttpStatus status) throws IOException;
 
     HttpStatus getStatus();
+
+    @Override
+    default <T> T getParam(String key) {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    default <T> void setParam(String key, T object) {
+        throw new NotImplementedException();
+    }
 
     default void write(String content) throws IOException {
         write(content.getBytes());
