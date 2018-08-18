@@ -88,4 +88,8 @@ final class JettyRequest implements HttpRequest {
     public void setHeader(String field, String... values) {
         throw new NotImplementedException();
     }
+
+    HttpServletRequest getReq(){
+        return req;
+    }
 }

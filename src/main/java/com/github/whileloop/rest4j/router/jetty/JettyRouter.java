@@ -32,18 +32,9 @@ public class JettyRouter extends AbstractHandler {
             JettyRequest req = new JettyRequest(httpServletRequest);
             JettyResponse resp = new JettyResponse(httpServletResponse);
             base.handle(req, resp);
-            if (!resp.sentHeaders) {
-                httpServletResponse.setStatus(resp.getStatus().code());
-            }
         } catch (Exception e) {
             logger.error("failed to execute handler: " + e.toString());
             httpServletResponse.setStatus(500);
-        } finally {
-            try {
-                httpServletResponse.getOutputStream().close();
-            } catch (IOException e) {
-                logger.error("failed to get os", e);
-            }
         }
     }
 }

@@ -70,4 +70,8 @@ final class JettyResponse implements HttpResponse {
             resp.addHeader(field, values[i]);
         }
     }
+
+    HttpServletResponse getResp() {
+        return resp;
+    }
 }
