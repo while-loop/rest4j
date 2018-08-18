@@ -95,7 +95,7 @@ public class Router implements Handler {
             List<Route> routes = match(req);
             if (routes == null || routes.size() <= 0) {
                 resp.writeHeader(NOT_FOUND);
-                System.err.println("Path not found " + req.getUrl().getPath());
+                logger.error("Path not found " + req.getUrl().getPath());
                 return;
             }
 
