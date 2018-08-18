@@ -56,17 +56,6 @@ final class JettyResponse implements HttpResponse {
     }
 
     @Override
-    public <T> T getParam(String key) {
-        // not impl
-        return null;
-    }
-
-    @Override
-    public <T> void setParam(String key, T object) {
-        // not impl
-    }
-
-    @Override
     public List<String> getHeader(String field) {
         return new ArrayList<>(resp.getHeaders(field));
     }
