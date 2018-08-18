@@ -25,7 +25,7 @@ public class JsonUtils {
         return GSON.fromJson(reader, type);
     }
 
-    static String is2String(InputStream is) {
+    public static String is2String(InputStream is) {
         try (java.util.Scanner s = new java.util.Scanner(is, StandardCharsets.UTF_8.name())) {
             s.useDelimiter("\\A");
             return s.hasNext() ? s.next() : "";
